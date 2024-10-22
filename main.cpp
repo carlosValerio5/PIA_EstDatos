@@ -65,12 +65,44 @@ void agregarAlumno(Talumnos &alumnosT) {
 
     cout<<"\n\t\t\tDATOS DEL ALUMNO\n";
     cout<<"Ingrese la numero de matricula: ";cin>>aux->matricula;
-    cin.ignore();  // Limpia el buffer
-    cout<<"Ingrese el nombre: ";getline(cin,aux->nombre);
-    cout<<"Ingrese el promedio general: ";cin>>aux->promedioG;
-    cin.ignore();  // Limpia el buffer
-    cout<<"Ingrese la direccion: ";getline(cin,aux->direccion);
-    cout<<"Ingrese el numero de telefono: ";getline(cin,aux->telefono);
+    cin.ignore();
+    //validacion para nombre
+    do{
+        cout<<"Ingrese el nombre: ";getline(cin,aux->nombre);
+        if(aux->nombre.length() == 0)
+            cout<<"\nEl campo no puede estar vacio"<<endl;
+    }while(aux->nombre.length() == 0);
+
+        // Validación para promedio general
+    do{
+        cout << "Ingrese el promedio general: ";
+        cin >> aux->promedioG;
+
+        if (aux->promedioG <= 0 || aux->promedioG > 100) {
+            cout << "\nEl promedio general no puede ser menor a 0 o mayor a 100" << endl;
+        }
+    }while (aux->promedioG <= 0 || aux->promedioG > 100);
+    cin.ignore();
+
+    // Validación para dirección
+    do{
+        cout << "Ingrese la direccion: ";
+        getline(cin, aux->direccion);
+
+        if (aux->direccion.length() == 0) {
+            cout << "\nEl campo no puede estar vacio" << endl;
+        }
+    }while (aux->direccion.length() == 0);
+
+    // Validación para número de teléfono
+    do{
+        cout << "Ingrese el numero de telefono: ";
+        getline(cin, aux->telefono);
+
+        if (aux->telefono.length() != 10) {
+            cout << "\nEl telefono debe ser de 10 digitos" << endl;
+        }
+    }while (aux->telefono.length() != 10);
 
     if (alumnosT == NULL) {
         alumnosT = aux;
