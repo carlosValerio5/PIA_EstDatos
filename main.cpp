@@ -28,6 +28,13 @@ int main(){
         cout<<"----------MENU----------"<<endl;
         cout<<"1.Agregar alumno\n2.\n3.\n4.\n5.\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
         cout<<"\nIngresa una opcion: ";cin>>op;
+        while(op<1 || op >7){
+            cout<<"Error. Ingrese un valor entre 1 y 7"<<endl;
+            system("pause"); system("cls");
+            cout<<"----------MENU----------"<<endl;
+            cout<<"1.Agregar alumno\n2.\n3.\n4.\n5.\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
+            cout<<"\nIngresa una opcion: ";cin>>op;
+        }
             switch(op){
                 case 1:agregarAlumno(alumnos);
                     break;
@@ -66,7 +73,7 @@ void imprimir(Talumnos &alumnosT){
     }
 }
 
-// Función para contar la cantidad de alumnos en la lista (útil para QuickSort)
+// Funciï¿½n para contar la cantidad de alumnos en la lista (ï¿½til para QuickSort)
 int contarAlumnos(Talumnos alumnosT) {
     int count = 0;
     while (alumnosT != NULL) {
@@ -76,7 +83,7 @@ int contarAlumnos(Talumnos alumnosT) {
     return count;
 }
 
-// Función para convertir la lista enlazada a un array
+// Funciï¿½n para convertir la lista enlazada a un array
 void listaAArray(Talumnos alumnosT, Talumnos* array, int size) {
     for (int i = 0; i < size; i++) {
         array[i] = alumnosT;
@@ -84,7 +91,7 @@ void listaAArray(Talumnos alumnosT, Talumnos* array, int size) {
     }
 }
 
-// Función para convertir el array de vuelta a la lista enlazada
+// Funciï¿½n para convertir el array de vuelta a la lista enlazada
 void arrayALista(Talumnos* array, Talumnos& alumnosT, int size) {
     alumnosT = array[0];
     Talumnos p = alumnosT;
@@ -95,14 +102,14 @@ void arrayALista(Talumnos* array, Talumnos& alumnosT, int size) {
     p->sgtAlumno = NULL; // Terminar la lista
 }
 
-// Función para la búsqueda binaria en un array de alumnos por matrícula
+// Funciï¿½n para la bï¿½squeda binaria en un array de alumnos por matrï¿½cula
 bool busquedaBinaria(Talumnos* array, int size, int matricula) {
     int low = 0;
     int high = size - 1;
     while (low <= high) {
         int mid = (low + high) / 2;
         if (array[mid]->matricula == matricula) {
-            return true; // Matrícula ya existe
+            return true; // Matrï¿½cula ya existe
         } else if (array[mid]->matricula < matricula) {
             low = mid + 1;
         } else {
@@ -112,7 +119,7 @@ bool busquedaBinaria(Talumnos* array, int size, int matricula) {
     return false;
 }
 
-// Función para el QuickSort (ordenar por matrícula)
+// Funciï¿½n para el QuickSort (ordenar por matrï¿½cula)
 void quickSort(Talumnos* array, int low, int high) {
     if (low < high) {
         int pivot = array[high]->matricula;
@@ -131,7 +138,7 @@ void quickSort(Talumnos* array, int low, int high) {
     }
 }
 
-// Función para agregar un nuevo alumno con validación de matrícula duplicada
+// Funciï¿½n para agregar un nuevo alumno con validaciï¿½n de matrï¿½cula duplicada
 void agregarAlumno(Talumnos &alumnosT) {
     Talumnos aux = new(struct datosAlumnos);
     Talumnos p;
@@ -144,12 +151,12 @@ void agregarAlumno(Talumnos &alumnosT) {
 
     cout << "\n\t\t\tDATOS DEL ALUMNO\n";
 
-    // Validación de matrícula única
+    // Validaciï¿½n de matrï¿½cula ï¿½nica
     do {
         cout << "Ingrese el numero de matricula: ";
         cin >> matricula;
 
-        // Verificar que la entrada sea numérica y tenga exactamente 7 dígitos
+        // Verificar que la entrada sea numï¿½rica y tenga exactamente 7 dï¿½gitos
         if (cin.fail() || matricula < 1000000 || matricula > 9999999) {
             cout << "\nLa matricula debe ser un numero de 7 digitos y no puede contener letras." << endl;
             cin.clear(); // Limpiar el estado de error de cin
@@ -160,10 +167,10 @@ void agregarAlumno(Talumnos &alumnosT) {
 
     } while (matricula < 1000000 || matricula > 9999999 || busquedaBinaria(alumnosArray, cantidadAlumnos, matricula));
 
-    aux->matricula = matricula; // Asignar matrícula
+    aux->matricula = matricula; // Asignar matrï¿½cula
     cin.ignore();
 
-    // Validación para nombre
+    // Validaciï¿½n para nombre
     do {
         cout << "Ingrese el nombre: ";
         getline(cin, aux->nombre);
@@ -171,7 +178,7 @@ void agregarAlumno(Talumnos &alumnosT) {
             cout << "\nEl campo no puede estar vacio" << endl;
     } while (aux->nombre.length() == 0);
 
-    // Validación para promedio general
+    // Validaciï¿½n para promedio general
     do {
         cout << "Ingrese el promedio general: ";
         cin >> promedioG;
@@ -186,7 +193,7 @@ void agregarAlumno(Talumnos &alumnosT) {
     aux->promedioG = promedioG;
     cin.ignore();
 
-    // Validación para dirección
+    // Validaciï¿½n para direcciï¿½n
     do {
         cout << "Ingrese la direccion: ";
         getline(cin, aux->direccion);
@@ -196,7 +203,7 @@ void agregarAlumno(Talumnos &alumnosT) {
         }
     } while (aux->direccion.length() == 0);
 
-    // Validación para número de teléfono
+    // Validaciï¿½n para nï¿½mero de telï¿½fono
     do {
         cout << "Ingrese el numero de telefono: ";
         getline(cin, aux->telefono);
@@ -206,7 +213,7 @@ void agregarAlumno(Talumnos &alumnosT) {
         }
     } while (aux->telefono.length() != 10);
 
-    // Agregar el nuevo alumno a la lista (como último elemento)
+    // Agregar el nuevo alumno a la lista (como ï¿½ltimo elemento)
     aux->sgtAlumno = NULL;
     if (alumnosT == NULL) {
         alumnosT = aux;
@@ -218,7 +225,7 @@ void agregarAlumno(Talumnos &alumnosT) {
         p->sgtAlumno = aux;
     }
 
-    // Ordenar la lista por matrícula usando QuickSort
+    // Ordenar la lista por matrï¿½cula usando QuickSort
     cantidadAlumnos = contarAlumnos(alumnosT); // Recontar la cantidad de alumnos
     alumnosArray = new Talumnos[cantidadAlumnos]; // Crear nuevo array para QuickSort
     listaAArray(alumnosT, alumnosArray, cantidadAlumnos); // Convertir lista a array
