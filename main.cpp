@@ -20,6 +20,7 @@ void listaAArray(Talumnos , Talumnos* , int );
 void arrayALista(Talumnos* , Talumnos& , int );
 void quickSort(Talumnos* , int , int );
 int busquedaBinaria(Talumnos* , int , int );
+void modifdatos(Talumnos &);
 
 //Funciones de Baja y alta de estudiantes
 int menuBaja();
@@ -38,14 +39,14 @@ int main(){
     Talumnos alumnos=NULL;
     Talumnos PilaEliminados=NULL; 
     do{
-        cout<<"\n\n\n----------MENU----------"<<endl;
-        cout<<"1.Agregar alumno\n2.Baja de estudiantes\n3.\n4.\n5.\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
+        cout<<"----------MENU----------"<<endl;
+        cout<<"1.Agregar alumno\n2.Dar de baja\n3.\n4.\n5.Modificacion de Datos\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
         cout<<"\nIngresa una opcion: ";cin>>op;
         while(op<1 || op >7){
             cout<<"Error. Ingrese un valor entre 1 y 7"<<endl;
             system("pause"); system("cls");
             cout<<"----------MENU----------"<<endl;
-            cout<<"1.Agregar alumno\n2.Dar de baja\n3.\n4.\n5.\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
+            cout<<"1.Agregar alumno\n2.Dar de baja\n3.\n4.\n5.Modificacion de Datos\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
             cout<<"\nIngresa una opcion: ";cin>>op;
         }
             switch(op){
@@ -247,6 +248,7 @@ void arrayALista(Talumnos* array, Talumnos& alumnosT, int size) {
 
 // Funci�n para la b�squeda binaria en un array de alumnos por matr�cula
 int busquedaBinaria(Talumnos* array, int size, int matricula) {
+int busquedaBinaria(Talumnos* array, int size, int matricula) {
     int low = 0;
     int high = size - 1;
     while (low <= high) {
@@ -259,6 +261,7 @@ int busquedaBinaria(Talumnos* array, int size, int matricula) {
             high = mid - 1;
         }
     }
+    return -1;
     return -1;
 }
 
@@ -305,9 +308,11 @@ void agregarAlumno(Talumnos &alumnosT) {
             cin.clear(); // Limpiar el estado de error de cin
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer de entrada
         } else if (busquedaBinaria(alumnosArray, cantidadAlumnos, matricula)!=-1) {
+        } else if (busquedaBinaria(alumnosArray, cantidadAlumnos, matricula)!=-1) {
             cout << "\nLa matricula ya existe, ingrese una diferente." << endl;
         }
 
+    } while (matricula < 1000000 || matricula > 9999999 || busquedaBinaria(alumnosArray, cantidadAlumnos, matricula)!=-1);
     } while (matricula < 1000000 || matricula > 9999999 || busquedaBinaria(alumnosArray, cantidadAlumnos, matricula)!=-1);
 
     aux->matricula = matricula; // Asignar matr�cula
@@ -374,4 +379,40 @@ void agregarAlumno(Talumnos &alumnosT) {
     listaAArray(alumnosT, alumnosArray, cantidadAlumnos); // Convertir lista a array
     quickSort(alumnosArray, 0, cantidadAlumnos - 1); // Ordenar el array con QuickSort
     arrayALista(alumnosArray, alumnosT, cantidadAlumnos); // Convertir array de nuevo a lista
+}
+
+//Funcion para modificar datos de los alumnos
+void modifdatos(Talumnos &p){
+
+    int cantidad = contarAlumnos(p);//Cantidad de alumnos en la lista
+    Talumnos *array = new Talumnos[cantidad];
+    listaAArray(p, array, cantidad);//Convertir a array
+
+    int op, matricula, ubicacion;
+    do{
+        cout<<"\n1. Busqueda por Matricula\n2. Busqueda por nombre\nIngrese una opcion:";
+        cin>>op;
+        if(op<1||op>2){
+            cout<<"\nOpcion invalida, intente de nuevo."<<endl;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//Limpiar buffer
+        }
+    }while(op<1 || op>2);
+    //Busqueda Binaria por matricula
+    if(op==1){
+        do{
+            cout<<"\nIngrese una matricula:";
+            cin>>matricula;
+            if(to_string(matricula).length()<7){
+                cout<<"La matricula debe tener 7 digitos."<<endl;
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//Limpiar buffer
+            }
+
+        }while(to_string(matricula).length()<7);
+        ubicacion = busquedaBinaria(array, cantidad, matricula);
+        if(ubicacion == -1){
+            cout<<"\nMatricula no encontrada. Regresando a menu.\n"<<endl;
+            return;
+        }
+
+    }
 }
