@@ -19,7 +19,7 @@ int contarAlumnos(Talumnos );
 void listaAArray(Talumnos , Talumnos* , int );
 void arrayALista(Talumnos* , Talumnos& , int );
 void quickSort(Talumnos* , int , int );
-bool busquedaBinaria(Talumnos* , int , int );
+int busquedaBinaria(Talumnos* , int , int );
 void modifdatos(Talumnos &);
 
 //Funciones de Baja y alta de estudiantes
@@ -39,13 +39,13 @@ int main(){
     Talumnos alumnos=NULL;
     do{
         cout<<"----------MENU----------"<<endl;
-        cout<<"1.Agregar alumno\n2.\n3.\n4.\n5.\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
+        cout<<"1.Agregar alumno\n2.Dar de baja\n3.\n4.\n5.Modificacion de Datos\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
         cout<<"\nIngresa una opcion: ";cin>>op;
         while(op<1 || op >7){
             cout<<"Error. Ingrese un valor entre 1 y 7"<<endl;
             system("pause"); system("cls");
             cout<<"----------MENU----------"<<endl;
-            cout<<"1.Agregar alumno\n2.Dar de baja\n3.\n4.\n5.\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
+            cout<<"1.Agregar alumno\n2.Dar de baja\n3.\n4.\n5.Modificacion de Datos\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
             cout<<"\nIngresa una opcion: ";cin>>op;
         }
             switch(op){
@@ -210,20 +210,20 @@ void arrayALista(Talumnos* array, Talumnos& alumnosT, int size) {
 }
 
 // Funci�n para la b�squeda binaria en un array de alumnos por matr�cula
-bool busquedaBinaria(Talumnos* array, int size, int matricula) {
+int busquedaBinaria(Talumnos* array, int size, int matricula) {
     int low = 0;
     int high = size - 1;
     while (low <= high) {
         int mid = (low + high) / 2;
         if (array[mid]->matricula == matricula) {
-            return true; // Matr�cula ya existe
+            return mid; // Matr�cula ya existe
         } else if (array[mid]->matricula < matricula) {
             low = mid + 1;
         } else {
             high = mid - 1;
         }
     }
-    return false;
+    return -1;
 }
 
 // Funci�n para el QuickSort (ordenar por matr�cula)
@@ -268,11 +268,11 @@ void agregarAlumno(Talumnos &alumnosT) {
             cout << "\nLa matricula debe ser un numero de 7 digitos y no puede contener letras." << endl;
             cin.clear(); // Limpiar el estado de error de cin
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer de entrada
-        } else if (busquedaBinaria(alumnosArray, cantidadAlumnos, matricula)) {
+        } else if (busquedaBinaria(alumnosArray, cantidadAlumnos, matricula)!=-1) {
             cout << "\nLa matricula ya existe, ingrese una diferente." << endl;
         }
 
-    } while (matricula < 1000000 || matricula > 9999999 || busquedaBinaria(alumnosArray, cantidadAlumnos, matricula));
+    } while (matricula < 1000000 || matricula > 9999999 || busquedaBinaria(alumnosArray, cantidadAlumnos, matricula)!=-1);
 
     aux->matricula = matricula; // Asignar matr�cula
     cin.ignore();
@@ -367,11 +367,8 @@ void modifdatos(Talumnos &p){
             }
 
         }while(to_string(matricula).length()<7);
-        //int mat = *array[0]
-        cout << (array[0]);
-        //cout<<matricula;
         ubicacion = busquedaBinaria(array, cantidad, matricula);
-        if(ubicacion == 0){
+        if(ubicacion == -1){
             cout<<"\nMatricula no encontrada. Regresando a menu.\n"<<endl;
             return;
         }
