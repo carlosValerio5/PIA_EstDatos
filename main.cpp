@@ -21,6 +21,18 @@ void arrayALista(Talumnos* , Talumnos& , int );
 void quickSort(Talumnos* , int , int );
 bool busquedaBinaria(Talumnos* , int , int );
 
+//Funciones de Baja y alta de estudiantes
+int menuBaja();
+void eliminar(Talumnos &);
+int busquedaBinaria2(Talumnos*, int, int);//ocuparemos una variante de busquedaBinaria2 para retonar la posicion de la matricula (Posiblemente se modifique la primera version)
+void eliminarPorMatricula(Talumnos*, int);
+
+
+
+
+
+
+
 int main(){
     int op;
     Talumnos alumnos=NULL;
@@ -32,14 +44,14 @@ int main(){
             cout<<"Error. Ingrese un valor entre 1 y 7"<<endl;
             system("pause"); system("cls");
             cout<<"----------MENU----------"<<endl;
-            cout<<"1.Agregar alumno\n2.\n3.\n4.\n5.\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
+            cout<<"1.Agregar alumno\n2.Dar de baja\n3.\n4.\n5.\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
             cout<<"\nIngresa una opcion: ";cin>>op;
         }
             switch(op){
                 case 1:agregarAlumno(alumnos);
                     break;
 
-                case 2:
+                case 2:eliminar(alumnos);
                     break;
 
                 case 3:
@@ -62,7 +74,101 @@ int main(){
     return 0;
 }
 
+//-----------------------------------------------------------------------
+int menuBaja(){
+    int op;
 
+    do
+    {
+        cout << "\n\n1.- Por matricula. \n2.- Por nombre.";
+        cout << "\nSelecciona una opcion para dar de baja: ";
+        cin >> op;
+    } while (op != 1 && op != 2);
+    
+    return op;
+}
+
+
+int busquedaBinaria2(Talumnos* array, int size, int matricula)
+{
+    int low = 0;
+    int high = size - 1;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (array[mid]->matricula == matricula) {
+            return mid; // Matr�cula ya existe
+        } else if (array[mid]->matricula < matricula) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return -1;
+}
+
+
+void eliminarPorMatricula(Talumnos &listaAlumnos, int posE)
+{
+    Talumnos p, ant;
+    int i =0;
+    p = listaAlumnos;
+    if(listaAlumnos != NULL)
+    {
+        while(i <= posE)
+        {
+            if(i == posE)
+            {
+                if(p == listaAlumnos)
+                {
+                    listaAlumnos = listaAlumnos->sgtAlumno;
+                }else{
+                    ant->sgtAlumno = p->sgtAlumno;
+                }
+                //Aqui se le asiganara el nuevo elemento a la pila
+                cout << "\n\nSe elimina " << p->matricula;
+                return;
+            }
+            ant = p;
+            p = p->sgtAlumno;
+            i++;
+        }
+    }else{
+        cout << "\n\nLista vacia...";
+    }
+}
+
+
+void eliminar(Talumnos &alumnosT){ //Funcion para eliminar alumnos
+    if(menuBaja() == 1)//Eliminar alumno por matricula
+    {
+        int matricula, posE;
+        int cantidad = contarAlumnos(alumnosT);//contamos la cantidad de alumnos
+        Talumnos* alumnosArray = new Talumnos[cantidad]; // Crear un array temporal
+        listaAArray(alumnosT, alumnosArray, cantidad); // Convertir la lista a array
+        do
+        {
+            cout << "\n\nIngresa la matricula a eliminar: ";
+            cin >> matricula;
+            //Fragmento de codigo sacado de la funcion agregar funcion es para verificar la matricula
+            if (cin.fail() || matricula < 1000000 || matricula > 9999999) {
+                cout << "\nLa matricula debe ser un numero de 7 digitos y no puede contener letras." << endl;
+                cin.clear(); // Limpiar el estado de error de cin
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
+            posE = busquedaBinaria2(alumnosArray, cantidad, matricula); //posE sirvira para saber asta donde recorrer la lista para elimnar el alumno
+        } while (matricula < 1000000 || matricula > 9999999);
+        posE=  busquedaBinaria2(alumnosArray, cantidad, matricula);
+        arrayALista(alumnosArray, alumnosT, cantidad);
+        eliminarPorMatricula(alumnosT,posE);
+        
+    }else{
+
+    }
+}
+
+
+
+//------------------------------------------------------------------------
 void imprimir(Talumnos &alumnosT){
     Talumnos q;
     q=alumnosT;
@@ -183,12 +289,12 @@ void agregarAlumno(Talumnos &alumnosT) {
         cout << "Ingrese el promedio general: ";
         cin >> promedioG;
 
-        if (cin.fail() || promedioG <= 0 || promedioG > 100) {
+        if (cin.fail() || promedioG < 0 || promedioG > 100) {
             cout << "\nEl promedio general debe ser un numero entre 0 y 100.\n";
             cin.clear(); // Limpiar el estado de error de cin
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer de entrada
         }
-    } while (cin.fail() || promedioG <= 0 || promedioG > 100);
+    } while (cin.fail() || promedioG < 0 || promedioG > 100);
 
     aux->promedioG = promedioG;
     cin.ignore();
