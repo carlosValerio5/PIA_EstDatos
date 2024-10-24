@@ -183,12 +183,12 @@ void agregarAlumno(Talumnos &alumnosT) {
         cout << "Ingrese el promedio general: ";
         cin >> promedioG;
 
-        if (cin.fail() || promedioG <= 0 || promedioG > 100) {
+        if (cin.fail() || promedioG < 0 || promedioG > 100) {
             cout << "\nEl promedio general debe ser un numero entre 0 y 100.\n";
             cin.clear(); // Limpiar el estado de error de cin
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer de entrada
         }
-    } while (cin.fail() || promedioG <= 0 || promedioG > 100);
+    } while (cin.fail() || promedioG < 0 || promedioG > 100);
 
     aux->promedioG = promedioG;
     cin.ignore();
