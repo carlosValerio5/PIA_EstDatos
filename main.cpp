@@ -388,31 +388,69 @@ void modifdatos(Talumnos &p){
     Talumnos *array = new Talumnos[cantidad];
     listaAArray(p, array, cantidad);//Convertir a array
 
-    int op, matricula, ubicacion;
+    int op, matricula, ubicacion, opmod;
     do{
         cout<<"\n1. Busqueda por Matricula\n2. Busqueda por nombre\nIngrese una opcion:";
         cin>>op;
-        if(op<1||op>2){
+        if(cin.fail()||op<1||op>2){
             cout<<"\nOpcion invalida, intente de nuevo."<<endl;
+            cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//Limpiar buffer
         }
-    }while(op<1 || op>2);
+    }while(cin.fail()||op<1 || op>2);
     //Busqueda Binaria por matricula
     if(op==1){
         do{
             cout<<"\nIngrese una matricula:";
             cin>>matricula;
-            if(to_string(matricula).length()<7){
+            if(cin.fail()||to_string(matricula).length()<7){
                 cout<<"La matricula debe tener 7 digitos."<<endl;
+                cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//Limpiar buffer
             }
 
-        }while(to_string(matricula).length()<7);
-        ubicacion = busquedaBinaria(array, cantidad, matricula);
-        if(ubicacion == -1){
+        }while(cin.fail()||to_string(matricula).length()<7);
+
+        //Se busca la matricula ingresada con busqueda binaria
+        ubicacion = busquedaBinaria(array, cantidad, matricula);//posicion de la matricula en array
+
+        if(ubicacion == -1){//Caso matricula no encontrada
             cout<<"\nMatricula no encontrada. Regresando a menu.\n"<<endl;
             return;
         }
+        do{
+            cout << "\n1. Matricula\n2. Nombre\n3. Promedio General\n4. Direccion\n5. Telefono\nIngrese una opcion: ";
+            cin>>opmod;
+            if(cin.fail()||op<1||op>5){
+                cout<<"Ingrese una opcion entre 1 y 5."<<endl;
+                cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//Limpiar buffer
+            }
+            switch (opmod)
+            {
+            case 1:
+                do{
+                    cout<<"\nIngrese la nueva matricula:";
+                    cin>>matricula;
+                    if(cin.fail()||to_string(matricula).length()<7){
+                        cout<<"La matricula debe tener 7 digitos."<<endl;
+                        cin.clear();
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//Limpiar buffer
+                    }
+
+                }while(cin.fail()||to_string(matricula).length()<7);
+
+                array[ubicacion]->matricula = matricula;
+
+                quickSort(array, 0, cantidad-1);//volvemos a ordenar a los alumnos por matricula    
+                break;
+            
+            default:
+                break;
+            }
+
+        }while(cin.fail()||op<1||op>5);
 
     }
+    arrayALista(array, p, cantidad);
 }
