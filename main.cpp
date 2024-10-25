@@ -62,7 +62,7 @@ int main(){
                 case 4:
                     break;
 
-                case 5:
+                case 5:modifdatos(alumnos);
                     break;
 
                 case 6:imprimir(alumnos);
@@ -248,7 +248,6 @@ void arrayALista(Talumnos* array, Talumnos& alumnosT, int size) {
 
 // Funci�n para la b�squeda binaria en un array de alumnos por matr�cula
 int busquedaBinaria(Talumnos* array, int size, int matricula) {
-int busquedaBinaria(Talumnos* array, int size, int matricula) {
     int low = 0;
     int high = size - 1;
     while (low <= high) {
@@ -261,7 +260,6 @@ int busquedaBinaria(Talumnos* array, int size, int matricula) {
             high = mid - 1;
         }
     }
-    return -1;
     return -1;
 }
 
@@ -308,11 +306,9 @@ void agregarAlumno(Talumnos &alumnosT) {
             cin.clear(); // Limpiar el estado de error de cin
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer de entrada
         } else if (busquedaBinaria(alumnosArray, cantidadAlumnos, matricula)!=-1) {
-        } else if (busquedaBinaria(alumnosArray, cantidadAlumnos, matricula)!=-1) {
             cout << "\nLa matricula ya existe, ingrese una diferente." << endl;
         }
 
-    } while (matricula < 1000000 || matricula > 9999999 || busquedaBinaria(alumnosArray, cantidadAlumnos, matricula)!=-1);
     } while (matricula < 1000000 || matricula > 9999999 || busquedaBinaria(alumnosArray, cantidadAlumnos, matricula)!=-1);
 
     aux->matricula = matricula; // Asignar matr�cula
