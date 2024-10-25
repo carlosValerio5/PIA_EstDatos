@@ -40,13 +40,13 @@ int main(){
     Talumnos PilaEliminados=NULL; 
     do{
         cout<<"----------MENU----------"<<endl;
-        cout<<"1.Agregar alumno\n2.Dar de baja\n3.\n4.\n5.Modificacion de Datos\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
+        cout<<"1.Agregar alumno\n2.Baja de estudiantes\n3.\n4.\n5.Modificacion de Datos\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
         cout<<"\nIngresa una opcion: ";cin>>op;
         while(op<1 || op >7){
             cout<<"Error. Ingrese un valor entre 1 y 7"<<endl;
             system("pause"); system("cls");
-            cout<<"----------MENU----------"<<endl;
-            cout<<"1.Agregar alumno\n2.Dar de baja\n3.\n4.\n5.Modificacion de Datos\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
+            cout<<"\n\n\n----------MENU----------"<<endl;
+            cout<<"1.Agregar alumno\n2.Baja de estudiantes\n3.\n4.\n5.Modificacion de Datos\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
             cout<<"\nIngresa una opcion: ";cin>>op;
         }
             switch(op){
@@ -212,7 +212,7 @@ void imprimir(Talumnos &alumnosT){
     q=alumnosT;
 
     while(q!=NULL){
-        cout<<q->matricula<<endl;
+        cout<<q->matricula<<" "<<q->promedioG<<endl;
         q=q->sgtAlumno;
     }
 }
@@ -324,15 +324,16 @@ void agregarAlumno(Talumnos &alumnosT) {
 
     // Validaci�n para promedio general
     do {
+        if(cin.fail()){
+            cin.clear(); // Limpiar el estado de error de cin
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');} // Limpiar el buffer de entrada
         cout << "Ingrese el promedio general: ";
         cin >> promedioG;
 
         if (cin.fail() || promedioG < 0 || promedioG > 100) {
             cout << "\nEl promedio general debe ser un numero entre 0 y 100.\n";
-            cin.clear(); // Limpiar el estado de error de cin
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer de entrada
         }
-    } while (cin.fail() || promedioG < 0 || promedioG > 100);
+    } while (cin.fail()|| promedioG < 0 || promedioG > 100);
 
     aux->promedioG = promedioG;
     cin.ignore();
