@@ -212,7 +212,7 @@ void imprimir(Talumnos &alumnosT){
     q=alumnosT;
 
     while(q!=NULL){
-        cout<<q->matricula<<" "<<q->promedioG<<endl;
+        cout<<q->matricula<<" "<<q->promedioG<<" "<<q->nombre<<endl;
         q=q->sgtAlumno;
     }
 }
@@ -442,6 +442,22 @@ void modifdatos(Talumnos &p){
                 quickSort(array, 0, cantidad-1);//volvemos a ordenar a los alumnos por matricula    
                 break;
             
+            case 2:
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                do {
+                    cout << "\nIngrese el nombre: ";
+                    getline(cin, array[ubicacion]->nombre);
+                    if (array[ubicacion]->nombre.length() == 0)
+                        cout << "\nEl campo no puede estar vacio" << endl;
+                }while (array[ubicacion]->nombre.length() == 0);
+                cout<<"\nNombre modificado con exito"<<endl;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
             default:
                 break;
             }
