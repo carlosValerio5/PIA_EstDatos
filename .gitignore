@@ -1,2 +1,5 @@
 main.exe
 .vscode/
+.main*
+main_*
+main.cpp.orig
