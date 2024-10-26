@@ -27,7 +27,7 @@ int menuBaja();
 void eliminar(Talumnos &, Talumnos&);
 void eliminarPorMatricula(Talumnos&, int, Talumnos&);
 void eliminarPorNombre(Talumnos&, Talumnos&, string);
-
+void recuperarAlumno(Talumnos &,Talumnos&);
 
 
 
@@ -39,8 +39,8 @@ int main(){
     Talumnos alumnos=NULL;
     Talumnos PilaEliminados=NULL; 
     do{
-        cout<<"----------MENU----------"<<endl;
-        cout<<"1.Agregar alumno\n2.Baja de estudiantes\n3.\n4.\n5.Modificacion de Datos\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
+        cout<<"\n\n----------MENU----------"<<endl;
+        cout<<"1.Agregar alumno\n2.Baja de estudiantes\n3.Recuperar alumno\n4.\n5.Modificacion de Datos\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
         cout<<"\nIngresa una opcion: ";cin>>op;
         while(op<1 || op >7){
             cout<<"Error. Ingrese un valor entre 1 y 7"<<endl;
@@ -56,7 +56,7 @@ int main(){
                 case 2:eliminar(alumnos, PilaEliminados);
                     break;
 
-                case 3:
+                case 3: recuperarAlumno(PilaEliminados,alumnos);
                     break;
 
                 case 4:
@@ -91,8 +91,6 @@ int menuBaja(){
 }
 
 
-
-
 void eliminarPorMatricula(Talumnos &listaAlumnos, int posE, Talumnos &Pila)
 {
     Talumnos p, ant = NULL;
@@ -109,7 +107,6 @@ void eliminarPorMatricula(Talumnos &listaAlumnos, int posE, Talumnos &Pila)
             }else{
                 ant->sgtAlumno = p->sgtAlumno;
             }
-            cout << "\n\nSe elimina " << p->matricula;
             //Asignamos el nuevo elemento a la pila
             if(Pila == NULL)
             {
@@ -143,7 +140,6 @@ void eliminarPorNombre(Talumnos &listaAlumnos, Talumnos &Pila, string nombre)
                 ant->sgtAlumno = p->sgtAlumno;
             }
             //Asignamos el nuevo elemento a la pila
-            cout << "\n\nSe elimina " << p->nombre;
             if(Pila == NULL)
             {
                 Pila = p;
@@ -205,6 +201,26 @@ void eliminar(Talumnos &alumnosT, Talumnos &Pila){ //Funcion para eliminar alumn
 }
 
 
+
+void recuperarAlumno(Talumnos &pila, Talumnos &listaAlum)
+{
+    Talumnos aux=NULL;
+    int cantidad;
+    aux = pila;
+    pila = aux->sgtAlumno;
+
+    aux->sgtAlumno=listaAlum;
+    listaAlum=aux;
+    
+    cantidad = contarAlumnos(listaAlum); // Recontar la cantidad de alumnos
+    Talumnos* alumnosArray = new Talumnos[cantidad]; // Crear nuevo array para QuickSort
+    listaAArray(listaAlum, alumnosArray, cantidad); // Convertir lista a array
+    quickSort(alumnosArray, 0, cantidad - 1); // Ordenar el array con QuickSort
+    arrayALista(alumnosArray, listaAlum, cantidad); // Convertir array de nuevo a lista
+    cout << "\nSe recupero el alumno con exito\n\n\n";
+    system("pause");
+
+}
 
 //------------------------------------------------------------------------
 void imprimir(Talumnos &alumnosT){
