@@ -228,7 +228,7 @@ void imprimir(Talumnos &alumnosT){
     q=alumnosT;
 
     while(q!=NULL){
-        cout<<q->matricula<<" "<<q->promedioG<<" "<<q->nombre<<endl;
+        cout<<q->matricula<<" "<<q->promedioG<<" "<<q->nombre<<" "<<q->direccion<<" "<<q->telefono<<endl;
         q=q->sgtAlumno;
     }
 }
@@ -432,13 +432,16 @@ void modifdatos(Talumnos &p){
             return;
         }
         do{
-            cout << "\n1. Matricula\n2. Nombre\n3. Promedio General\n4. Direccion\n5. Telefono\nIngrese una opcion: ";
-            cin>>opmod;
-            if(cin.fail()||op<1||op>5){
-                cout<<"Ingrese una opcion entre 1 y 5."<<endl;
+            if(cin.fail()){
                 cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//Limpiar buffer
             }
+            cout << "\n1. Matricula\n2. Nombre\n3. Promedio General\n4. Direccion\n5. Telefono\nIngrese una opcion: ";
+            cin>>opmod;
+            if(cin.fail()||opmod<1||opmod>5){
+                cout<<"Ingrese una opcion entre 1 y 5."<<endl;
+            }
+        }while(cin.fail()||opmod<1||opmod>5);
             switch (opmod)
             {
             case 1:
@@ -469,17 +472,47 @@ void modifdatos(Talumnos &p){
                 cout<<"\nNombre modificado con exito"<<endl;
                 break;
             case 3:
+                do {
+                    if(cin.fail()){
+                        cin.clear(); // Limpiar el estado de error de cin
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');} // Limpiar el buffer de entrada
+                    cout << "Ingrese el promedio general: ";
+                    cin >> array[ubicacion]->promedioG;
+            
+                    if (cin.fail() || array[ubicacion]->promedioG < 0 || array[ubicacion]->promedioG > 100) {
+                        cout << "\nEl promedio general debe ser un numero entre 0 y 100.\n";
+                    }
+                } while (cin.fail()|| array[ubicacion]->promedioG < 0 || array[ubicacion]->promedioG > 100);
+                cout<<"Promedio General actualizado con exito."<<endl;
                 break;
             case 4:
+                cin.ignore();
+                do {
+                    cout << "Ingrese la direccion: ";
+                    getline(cin, array[ubicacion]->direccion);
+            
+                    if (array[ubicacion]->direccion.length() == 0) {
+                        cout << "\nEl campo no puede estar vacio" << endl;
+                    }
+                } while (array[ubicacion]->direccion.length() == 0);
                 break;
             case 5:
+                cin.ignore();
+                do {
+                    cout << "Ingrese el numero de telefono: ";
+                    getline(cin, array[ubicacion]->telefono);
+            
+                    if (array[ubicacion]->telefono.length() != 10) {
+                        cout << "\nEl telefono debe ser de 10 digitos" << endl;
+                    }
+                } while (array[ubicacion]->telefono.length() != 10);
                 break;
             default:
                 break;
             }
 
-        }while(cin.fail()||op<1||op>5);
 
     }
+    //Despues de haber aplicado los cambios, se actualizan en la lista
     arrayALista(array, p, cantidad);
 }
