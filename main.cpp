@@ -20,6 +20,7 @@ void listaAArray(Talumnos , Talumnos* , int );
 void arrayALista(Talumnos* , Talumnos& , int );
 void quickSort(Talumnos* , int , int );
 int busquedaBinaria(Talumnos* , int , int );
+int busquedaSecuencial(Talumnos *, int);
 void modifdatos(Talumnos &);
 
 //Funciones de Baja y alta de estudiantes
@@ -243,7 +244,7 @@ void imprimir(Talumnos &alumnosT){
     q=alumnosT;
 
     while(q!=NULL){
-        cout<<q->matricula<<" "<<q->promedioG<<" "<<q->nombre<<endl;
+        cout<<q->matricula<<" "<<q->promedioG<<" "<<q->nombre<<" "<<q->direccion<<" "<<q->telefono<<endl;
         q=q->sgtAlumno;
     }
 }
@@ -409,16 +410,36 @@ void agregarAlumno(Talumnos &alumnosT) {
     arrayALista(alumnosArray, alumnosT, cantidadAlumnos); // Convertir array de nuevo a lista
 }
 
+int busquedaSecuencial(Talumnos *array, int cantalumnos){
+    string nombusqueda;
+    cin.ignore();
+    do {
+            cout << "Ingrese el nombre: ";
+            getline(cin, nombusqueda);
+            if (nombusqueda.length() == 0)
+                cout << "\n\nEl campo no puede estar vacio" << endl;
+    } while (nombusqueda.length() == 0);
+        //Usamos busqueda secuencial para poder encontrar el nombre
+    for (int i = 0; i<cantalumnos; i++){
+        if(array[i]->nombre==nombusqueda){
+            return i;
+        }
+    }
+    return -1;
+}
+
+
 //Funcion para modificar datos de los alumnos
 void modifdatos(Talumnos &p){
 
+    string nombusqueda;
     int cantidad = contarAlumnos(p);//Cantidad de alumnos en la lista
     Talumnos *array = new Talumnos[cantidad];
     listaAArray(p, array, cantidad);//Convertir a array
 
-    int op, matricula, ubicacion, opmod;
+    int op, matricula, ubicacion, opmod, condic = 0;
     do{
-        cout<<"\n1. Busqueda por Matricula\n2. Busqueda por nombre\nIngrese una opcion:";
+        cout<<"\n1. Busqueda por Matricula\n2. Busqueda por Nombre\nIngrese una opcion:";
         cin>>op;
         if(cin.fail()||op<1||op>2){
             cout<<"\nOpcion invalida, intente de nuevo."<<endl;
@@ -446,55 +467,96 @@ void modifdatos(Talumnos &p){
             cout<<"\nMatricula no encontrada. Regresando a menu.\n"<<endl;
             return;
         }
+    }
+    //Busqueda por Nombre
+    else{
+        ubicacion = busquedaSecuencial(array, cantidad);
+        if(ubicacion == -1){
+            cout<<"\nNombre no encontrado. Regresando a menu.\n"<<endl;
+            return;
+        }
+    }
+    do{
+        if(cin.fail()){
+            cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//Limpiar buffer
+        }
+        cout << "\n1. Matricula\n2. Nombre\n3. Promedio General\n4. Direccion\n5. Telefono\nIngrese una opcion: ";
+        cin>>opmod;
+        if(cin.fail()||opmod<1||opmod>5){
+            cout<<"Ingrese una opcion entre 1 y 5."<<endl;
+        }
+    }while(cin.fail()||opmod<1||opmod>5);
+    switch (opmod)
+    {
+    case 1:
         do{
-            cout << "\n1. Matricula\n2. Nombre\n3. Promedio General\n4. Direccion\n5. Telefono\nIngrese una opcion: ";
-            cin>>opmod;
-            if(cin.fail()||op<1||op>5){
-                cout<<"Ingrese una opcion entre 1 y 5."<<endl;
+            condic = 0;
+            cout<<"\nIngrese la nueva matricula:";
+            cin>>matricula;
+            if(cin.fail()||to_string(matricula).length()<7){
+                cout<<"La matricula debe tener 7 digitos."<<endl;
                 cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//Limpiar buffer
             }
-            switch (opmod)
-            {
-            case 1:
-                do{
-                    cout<<"\nIngrese la nueva matricula:";
-                    cin>>matricula;
-                    if(cin.fail()||to_string(matricula).length()<7){
-                        cout<<"La matricula debe tener 7 digitos."<<endl;
-                        cin.clear();
-                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//Limpiar buffer
-                    }
-
-                }while(cin.fail()||to_string(matricula).length()<7);
-
-                array[ubicacion]->matricula = matricula;
-
-                quickSort(array, 0, cantidad-1);//volvemos a ordenar a los alumnos por matricula    
-                break;
-            
-            case 2:
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                do {
-                    cout << "\nIngrese el nombre: ";
-                    getline(cin, array[ubicacion]->nombre);
-                    if (array[ubicacion]->nombre.length() == 0)
-                        cout << "\nEl campo no puede estar vacio" << endl;
-                }while (array[ubicacion]->nombre.length() == 0);
-                cout<<"\nNombre modificado con exito"<<endl;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            default:
-                break;
+            else if(busquedaBinaria(array, cantidad, matricula)!=-1){
+                cout<<"\nEsta matricula ya existe intente con otra.";
+                condic = 1;
             }
-
-        }while(cin.fail()||op<1||op>5);
-
+        }while(cin.fail()||to_string(matricula).length()<7||condic);
+        array[ubicacion]->matricula = matricula;
+        quickSort(array, 0, cantidad-1);//volvemos a ordenar a los alumnos por matricula    
+        break;
+    
+    case 2:
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        do {
+            cout << "\nIngrese el nombre: ";
+            getline(cin, array[ubicacion]->nombre);
+            if (array[ubicacion]->nombre.length() == 0)
+                cout << "\nEl campo no puede estar vacio" << endl;
+        }while (array[ubicacion]->nombre.length() == 0);
+        cout<<"\nNombre modificado con exito"<<endl;
+        break;
+    case 3:
+        do {
+            if(cin.fail()){
+                cin.clear(); // Limpiar el estado de error de cin
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');} // Limpiar el buffer de entrada
+            cout << "Ingrese el promedio general: ";
+            cin >> array[ubicacion]->promedioG;
+    
+            if (cin.fail() || array[ubicacion]->promedioG < 0 || array[ubicacion]->promedioG > 100) {
+                cout << "\nEl promedio general debe ser un numero entre 0 y 100.\n";
+            }
+        } while (cin.fail()|| array[ubicacion]->promedioG < 0 || array[ubicacion]->promedioG > 100);
+        cout<<"Promedio General actualizado con exito."<<endl;
+        break;
+    case 4:
+        cin.ignore();
+        do {
+            cout << "Ingrese la direccion: ";
+            getline(cin, array[ubicacion]->direccion);
+    
+            if (array[ubicacion]->direccion.length() == 0) {
+                cout << "\nEl campo no puede estar vacio" << endl;
+            }
+        } while (array[ubicacion]->direccion.length() == 0);
+        break;
+    case 5:
+        cin.ignore();
+        do {
+            cout << "Ingrese el numero de telefono: ";
+            getline(cin, array[ubicacion]->telefono);
+    
+            if (array[ubicacion]->telefono.length() != 10) {
+                cout << "\nEl telefono debe ser de 10 digitos" << endl;
+            }
+        } while (array[ubicacion]->telefono.length() != 10);
+        break;
+    default:
+        break;
     }
+    //Despues de haber aplicado los cambios, se actualizan en la lista
     arrayALista(array, p, cantidad);
 }
