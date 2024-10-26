@@ -48,6 +48,11 @@ int main(){
             cout<<"\n\n\n----------MENU----------"<<endl;
             cout<<"1.Agregar alumno\n2.Baja de estudiantes\n3.\n4.\n5.Modificacion de Datos\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
             cout<<"\nIngresa una opcion: ";cin>>op;
+            if (cin.fail()) {
+                cin.clear(); 
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                op = 0;
+            }
         }
             switch(op){
                 case 1:agregarAlumno(alumnos);
@@ -56,7 +61,11 @@ int main(){
                 case 2:eliminar(alumnos, PilaEliminados);
                     break;
 
-                case 3: recuperarAlumno(PilaEliminados,alumnos);
+                case 3: if(PilaEliminados != NULL){
+                    recuperarAlumno(PilaEliminados,alumnos);
+                    }else{
+                        cout << "\nNo hay alumnos dados de baja ";
+                    }
                     break;
 
                 case 4:
@@ -82,9 +91,15 @@ int menuBaja(){
 
     do
     {
-        cout << "\n\n1.- Por matricula. \n2.- Por nombre.";
+        cout << "\n\n1.-Por matricula. \n2.-Por nombre.";
         cout << "\nSelecciona una opcion para dar de baja: ";
         cin >> op;
+        if (cin.fail()) {
+            cout << "Entrada invalida. Por favor ingresa un numero." << endl;
+            cin.clear(); 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            op = 0;
+        }
     } while (op != 1 && op != 2);
     
     return op;
@@ -154,6 +169,7 @@ void eliminarPorNombre(Talumnos &listaAlumnos, Talumnos &Pila, string nombre)
         ant = p;
         p = p->sgtAlumno;
     }
+    cout << "\nNo se encontro el nombre";
 }
 
 
@@ -192,7 +208,6 @@ void eliminar(Talumnos &alumnosT, Talumnos &Pila){ //Funcion para eliminar alumn
                     cout << "\nEl campo no puede estar vacio" << endl;
             } while (nombre.length() == 0);
             eliminarPorNombre(alumnosT,Pila,nombre);
-            cout << "\n\n" << Pila->nombre;
             
         }
     }else{
