@@ -41,7 +41,6 @@ int main(){
     int op;
     Talumnos alumnos=NULL;
     Talumnos PilaEliminados=NULL;
-    Talumnos PilaGrupos = NULL; 
     do{
         cout<<"\n\n----------MENU----------"<<endl;
         cout<<"1.Agregar alumno\n2.Baja de estudiantes\n3.Recuperar alumno\n4.Mostrar(Temporal)\n5.Modificacion de Datos\n6.Creacion de Grupos\n7.Salir\n"<<endl;
