@@ -15,6 +15,7 @@ struct datosAlumnos{
 
 typedef struct datosAlumnos *Talumnos;
 void imprimir(Talumnos &);
+char menuReportes();
 void agregarAlumno(Talumnos &);
 int contarAlumnos(Talumnos );
 void listaAArray(Talumnos , Talumnos* , int );
@@ -242,15 +243,62 @@ void recuperarAlumno(Talumnos &pila, Talumnos &listaAlum)
 }
 
 //------------------------------------------------------------------------
+//Opcion de reportes
 void imprimir(Talumnos &alumnosT){
-    Talumnos q;
+    char op;
+	Talumnos q;
     q=alumnosT;
+    
+    do{
+		op = menuReportes();
+		
+		switch(op){
+			case 'a':
+				while(q!=NULL){
+					if(q->promedioG>=70){
+						cout<<setfill('0')<<setw(7)<<q->matricula;
+				        cout<<" "<<q->nombre<<" "<<q->direccion<<" "<<q->telefono<<endl;
+				        q=q->sgtAlumno;
+					}
+			    }
+				break;
+			case 'b':
+				break;
+			case 'c':
+				break;
+			case 'd':
+				cout<<left<<setw(10)<<"Matricula"<<setw(15)<<"Nombre"<<setw(15)<<"Direccion"<<setw(10)<<"Telefono"<<endl;
+				while(q!=NULL){
+			        cout<<setw(3)<<setfill('0')<<setw(7)<<q->matricula;
+			        cout<<" "<<q->nombre<<" "<<q->direccion<<" "<<q->telefono<<endl;
+			        q=q->sgtAlumno;
+			    }
+				break;
+			case 'e':
+				break;
+			case 'f':
+				break;
+		}
+	} while(op!='f');
+	
+    
+}
 
-    while(q!=NULL){
-        cout<<setfill('0')<<setw(7)<<q->matricula;
-        cout<<" "<<q->promedioG<<" "<<q->nombre<<" "<<q->direccion<<" "<<q->telefono<<endl;
-        q=q->sgtAlumno;
-    }
+char menuReportes(){
+	char op;
+
+    do
+    {
+        cout << "\n\na) Alumnos Aprobados. \nb) Porcentajes. \nc) Busqueda por calificacion.\nd) Datos Generales.\ne) Alumnos inactivos\nf) Salir";
+        cout << "\nSelecciona una opcion: ";
+        cin >> op;
+        if (op != 'a' && op != 'b'&& op != 'c'&& op != 'd'&& op != 'e'&& op != 'f') {
+            cout << "Entrada invalida. Por favor ingresa un caracter valido." << endl;
+            cin.clear(); 
+        }
+    } while (op != 'a' && op != 'b'&& op != 'c'&& op != 'd'&& op != 'e'&& op != 'f');
+    
+    return op;
 }
 
 // Funci�n para contar la cantidad de alumnos en la lista (�til para QuickSort)
