@@ -1,6 +1,7 @@
 #include<iostream>
 #include <limits>
 #include<string>
+#include <iomanip>
 using namespace std;
 
 struct datosAlumnos{
@@ -22,6 +23,7 @@ void quickSort(Talumnos* , int , int );
 int busquedaBinaria(Talumnos* , int , int );
 int busquedaSecuencial(Talumnos *, int);
 void modifdatos(Talumnos &);
+void creargrupos(Talumnos &, Talumnos &);
 
 //Funciones de Baja y alta de estudiantes
 int menuBaja();
@@ -38,16 +40,17 @@ void recuperarAlumno(Talumnos &,Talumnos&);
 int main(){
     int op;
     Talumnos alumnos=NULL;
-    Talumnos PilaEliminados=NULL; 
+    Talumnos PilaEliminados=NULL;
+    Talumnos PilaGrupos = NULL; 
     do{
         cout<<"\n\n----------MENU----------"<<endl;
-        cout<<"1.Agregar alumno\n2.Baja de estudiantes\n3.Recuperar alumno\n4.\n5.Modificacion de Datos\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
+        cout<<"1.Agregar alumno\n2.Baja de estudiantes\n3.Recuperar alumno\n4.Mostrar(Temporal)\n5.Modificacion de Datos\n6.Creacion de Grupos\n7.Salir\n"<<endl;
         cout<<"\nIngresa una opcion: ";cin>>op;
         while(op<1 || op >7){
             cout<<"Error. Ingrese un valor entre 1 y 7"<<endl;
             system("pause"); system("cls");
             cout<<"\n\n\n----------MENU----------"<<endl;
-            cout<<"1.Agregar alumno\n2.Baja de estudiantes\n3.\n4.\n5.Modificacion de Datos\n6.Mostrar(Temporal)\n7.Salir\n"<<endl;
+            cout<<"1.Agregar alumno\n2.Baja de estudiantes\n3.\n4.Mostrar(Temporal)\n5.Modificacion de Datos\n6.Creacion de Grupos\n7.Salir\n"<<endl;
             cout<<"\nIngresa una opcion: ";cin>>op;
             if (cin.fail()) {
                 cin.clear(); 
@@ -69,13 +72,13 @@ int main(){
                     }
                     break;
 
-                case 4:
+                case 4:imprimir(alumnos);
                     break;
 
                 case 5:modifdatos(alumnos);
                     break;
 
-                case 6:imprimir(alumnos);
+                case 6:creargrupos(alumnos, PilaGrupos);
                     break;
             }
 
@@ -190,13 +193,13 @@ void eliminar(Talumnos &alumnosT, Talumnos &Pila){ //Funcion para eliminar alumn
                 cout << "\n\nIngresa la matricula a eliminar: ";
                 cin >> matricula;
                 //Fragmento de codigo sacado de la funcion agregar funcion es para verificar la matricula
-                if (cin.fail() || matricula < 1000000 || matricula > 9999999) {
+                if (cin.fail() || matricula <= 0 || matricula > 9999999) {
                     cout << "\nLa matricula debe ser un numero de 7 digitos y no puede contener letras." << endl;
                     cin.clear(); // Limpiar el estado de error de cin
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 }
                 posE = busquedaBinaria(alumnosArray, cantidad, matricula); //posE sirvira para saber asta donde recorrer la lista para elimnar el alumno
-            } while (matricula < 1000000 || matricula > 9999999 ||  busquedaBinaria(alumnosArray, cantidad, matricula)==-1);
+            } while (matricula <= 0 || matricula > 9999999 ||  busquedaBinaria(alumnosArray, cantidad, matricula)==-1);
             arrayALista(alumnosArray, alumnosT, cantidad);
             eliminarPorMatricula(alumnosT,posE, Pila);
         }else{
@@ -244,7 +247,8 @@ void imprimir(Talumnos &alumnosT){
     q=alumnosT;
 
     while(q!=NULL){
-        cout<<q->matricula<<" "<<q->promedioG<<" "<<q->nombre<<" "<<q->direccion<<" "<<q->telefono<<endl;
+        cout<<setfill('0')<<setw(7)<<q->matricula;
+        cout<<" "<<q->promedioG<<" "<<q->nombre<<" "<<q->direccion<<" "<<q->telefono<<endl;
         q=q->sgtAlumno;
     }
 }
@@ -333,7 +337,7 @@ void agregarAlumno(Talumnos &alumnosT) {
         cin >> matricula;
 
         // Verificar que la entrada sea num�rica y tenga exactamente 7 d�gitos
-        if (cin.fail() || matricula < 1000000 || matricula > 9999999) {
+        if (cin.fail() || matricula <= 0 || matricula > 9999999) {
             cout << "\nLa matricula debe ser un numero de 7 digitos y no puede contener letras." << endl;
             cin.clear(); // Limpiar el estado de error de cin
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer de entrada
@@ -341,7 +345,7 @@ void agregarAlumno(Talumnos &alumnosT) {
             cout << "\nLa matricula ya existe, ingrese una diferente." << endl;
         }
 
-    } while (matricula < 1000000 || matricula > 9999999 || busquedaBinaria(alumnosArray, cantidadAlumnos, matricula)!=-1);
+    } while (matricula <= 0 || matricula > 9999999 || busquedaBinaria(alumnosArray, cantidadAlumnos, matricula)!=-1);
 
     aux->matricula = matricula; // Asignar matr�cula
     cin.ignore();
@@ -450,15 +454,17 @@ void modifdatos(Talumnos &p){
     //Busqueda Binaria por matricula
     if(op==1){
         do{
-            cout<<"\nIngrese una matricula:";
-            cin>>matricula;
-            if(cin.fail()||to_string(matricula).length()<7){
-                cout<<"La matricula debe tener 7 digitos."<<endl;
+            if (cin.fail()){
                 cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//Limpiar buffer
             }
+            cout<<"\nIngrese una matricula:";
+            cin>>matricula;
+            if(cin.fail()||matricula <= 0 || matricula > 9999999){
+                cout<<"La matricula debe tener 7 digitos."<<endl;
+            }
 
-        }while(cin.fail()||to_string(matricula).length()<7);
+        }while(cin.fail()||matricula <= 0 || matricula > 9999999);
 
         //Se busca la matricula ingresada con busqueda binaria
         ubicacion = busquedaBinaria(array, cantidad, matricula);//posicion de la matricula en array
@@ -492,18 +498,20 @@ void modifdatos(Talumnos &p){
     case 1:
         do{
             condic = 0;
-            cout<<"\nIngrese la nueva matricula:";
-            cin>>matricula;
-            if(cin.fail()||to_string(matricula).length()<7){
-                cout<<"La matricula debe tener 7 digitos."<<endl;
+            if(cin.fail()){
                 cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//Limpiar buffer
+            }
+            cout<<"\nIngrese la nueva matricula:";
+            cin>>matricula;
+            if(cin.fail()|| matricula <= 0 || matricula > 9999999){
+                cout<<"La matricula debe tener 7 digitos."<<endl;
             }
             else if(busquedaBinaria(array, cantidad, matricula)!=-1){
                 cout<<"\nEsta matricula ya existe intente con otra.";
                 condic = 1;
             }
-        }while(cin.fail()||to_string(matricula).length()<7||condic);
+        }while(cin.fail()|| matricula <= 0 || matricula > 9999999 ||condic);
         array[ubicacion]->matricula = matricula;
         quickSort(array, 0, cantidad-1);//volvemos a ordenar a los alumnos por matricula    
         break;
@@ -560,3 +568,34 @@ void modifdatos(Talumnos &p){
     //Despues de haber aplicado los cambios, se actualizan en la lista
     arrayALista(array, p, cantidad);
 }
+
+//Funcion para creargrupos
+void creargrupos(Talumnos &alumnos, Talumnos &pila){
+    int cantalumnos = contarAlumnos(alumnos);
+    int numgrupos, alumengrup;//numero de grupos y el numero de alumnos por grupo
+    Talumnos *array = new Talumnos[cantalumnos];
+    listaAArray(alumnos, array, cantalumnos);
+    do{
+        if(cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+        cout<<"\nIngrese el numero de grupos a crear: ";
+        cin>>numgrupos;
+        if(cin.fail()||numgrupos<=0||numgrupos>cantalumnos)
+            cout<<"\nEl numero de grupos debe ser un numero mayor a cero y menor al total de alumnos.";
+        
+    }while(cin.fail()||numgrupos<=0||numgrupos>cantalumnos);
+    cout<<numgrupos;
+
+    //Division de techo para determinar la cantidad de alumnos por grupo
+    alumengrup = cantalumnos/numgrupos+(cantalumnos%numgrupos !=0);
+    for(int i = 0; i<numgrupos; i++){
+        cout<<"\nGrupo "<<i+1;
+        for(int j = 0; j<alumengrup; j++){
+            cout<<"\nNombre: "<<array[j+alumengrup*i]->nombre<<" Matricula: "<<array[j+alumengrup*i]->matricula;
+        }
+    }
+
+}
+
