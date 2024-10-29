@@ -23,14 +23,14 @@ void quickSort(Talumnos* , int , int );
 int busquedaBinaria(Talumnos* , int , int );
 int busquedaSecuencial(Talumnos *, int);
 void modifdatos(Talumnos &);
-void creargrupos(Talumnos &, Talumnos &);
+void creargrupos(Talumnos &);
 
 //Funciones de Baja y alta de estudiantes
 int menuBaja();
 void eliminar(Talumnos &, Talumnos&);
 void eliminarPorMatricula(Talumnos&, int, Talumnos&);
 void eliminarPorNombre(Talumnos&, Talumnos&, string);
-void recuperarAlumno(Talumnos &,Talumnos&);
+void recuperarAlumno(Talumnos &, Talumnos &);
 
 
 
@@ -78,7 +78,7 @@ int main(){
                 case 5:modifdatos(alumnos);
                     break;
 
-                case 6:creargrupos(alumnos, PilaGrupos);
+                case 6:creargrupos(alumnos);
                     break;
             }
 
@@ -570,8 +570,9 @@ void modifdatos(Talumnos &p){
 }
 
 //Funcion para creargrupos
-void creargrupos(Talumnos &alumnos, Talumnos &pila){
+void creargrupos(Talumnos &alumnos){
     int cantalumnos = contarAlumnos(alumnos);
+    int restantes;
     int numgrupos, alumengrup;//numero de grupos y el numero de alumnos por grupo
     Talumnos *array = new Talumnos[cantalumnos];
     listaAArray(alumnos, array, cantalumnos);
@@ -588,13 +589,19 @@ void creargrupos(Talumnos &alumnos, Talumnos &pila){
     }while(cin.fail()||numgrupos<=0||numgrupos>cantalumnos);
     cout<<numgrupos;
 
-    //Division de techo para determinar la cantidad de alumnos por grupo
-    alumengrup = cantalumnos/numgrupos+(cantalumnos%numgrupos !=0);
+    
+    restantes = cantalumnos;
+    alumengrup = cantalumnos/numgrupos;
     for(int i = 0; i<numgrupos; i++){
         cout<<"\nGrupo "<<i+1;
-        for(int j = 0; j<alumengrup; j++){
-            cout<<"\nNombre: "<<array[j+alumengrup*i]->nombre<<" Matricula: "<<array[j+alumengrup*i]->matricula;
+        //En caso de que estemos en la ultima iteracion el limite seran los alumnos restantes.
+        for(int j = 0; j < ((i==numgrupos-1) ? restantes: alumengrup); j++){
+            cout<<"\nNombre: "<<array[j+alumengrup*i]->nombre;
+            cout<<" Matricula: ";
+            cout<<setw(7)<<array[j+alumengrup*i]->matricula;
         }
+        //Restamos la cantidad de alumnos en el grupo a el total de alumnos restantes.
+        restantes = restantes - alumengrup;
     }
 
 }
