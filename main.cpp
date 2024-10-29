@@ -53,7 +53,7 @@ int main(){
             cout<<"1.Agregar alumno\n2.Baja de estudiantes\n3.\n4.Mostrar(Temporal)\n5.Modificacion de Datos\n6.Creacion de Grupos\n7.Salir\n"<<endl;
             cout<<"\nIngresa una opcion: ";cin>>op;
             if (cin.fail()) {
-                cin.clear(); 
+                cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 op = 0;
             }
@@ -100,12 +100,12 @@ int menuBaja(){
         cin >> op;
         if (cin.fail()) {
             cout << "Entrada invalida. Por favor ingresa un numero." << endl;
-            cin.clear(); 
+            cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             op = 0;
         }
     } while (op != 1 && op != 2);
-    
+
     return op;
 }
 
@@ -115,7 +115,7 @@ void eliminarPorMatricula(Talumnos &listaAlumnos, int posE, Talumnos &Pila)
     Talumnos p, ant = NULL;
     int i =0;
     p = listaAlumnos;
-    
+
     while(i <= posE)
     {
         if(i == posE)
@@ -168,7 +168,7 @@ void eliminarPorNombre(Talumnos &listaAlumnos, Talumnos &Pila, string nombre)
                 Pila = p;
             }
             return;
-            
+
         }
         ant = p;
         p = p->sgtAlumno;
@@ -212,7 +212,7 @@ void eliminar(Talumnos &alumnosT, Talumnos &Pila){ //Funcion para eliminar alumn
                     cout << "\nEl campo no puede estar vacio" << endl;
             } while (nombre.length() == 0);
             eliminarPorNombre(alumnosT,Pila,nombre);
-            
+
         }
     }else{
         cout << "\nNo se puede eliminar ningun elemento porque la lista esta vacia... ";
@@ -230,7 +230,7 @@ void recuperarAlumno(Talumnos &pila, Talumnos &listaAlum)
 
     aux->sgtAlumno=listaAlum;
     listaAlum=aux;
-    
+
     cantidad = contarAlumnos(listaAlum); // Recontar la cantidad de alumnos
     Talumnos* alumnosArray = new Talumnos[cantidad]; // Crear nuevo array para QuickSort
     listaAArray(listaAlum, alumnosArray, cantidad); // Convertir lista a array
@@ -247,10 +247,10 @@ void imprimir(Talumnos &alumnosT){
     char op;
 	Talumnos q;
     q=alumnosT;
-    
+
     do{
 		op = menuReportes();
-		
+
 		switch(op){
 			case 'a':
 				while(q!=NULL){
@@ -279,8 +279,8 @@ void imprimir(Talumnos &alumnosT){
 				break;
 		}
 	} while(op!='f');
-	
-    
+
+
 }
 
 char menuReportes(){
@@ -293,10 +293,10 @@ char menuReportes(){
         cin >> op;
         if (op != 'a' && op != 'b'&& op != 'c'&& op != 'd'&& op != 'e'&& op != 'f') {
             cout << "Entrada invalida. Por favor ingresa un caracter valido." << endl;
-            cin.clear(); 
+            cin.clear();
         }
     } while (op != 'a' && op != 'b'&& op != 'c'&& op != 'd'&& op != 'e'&& op != 'f');
-    
+
     return op;
 }
 
@@ -385,7 +385,7 @@ void agregarAlumno(Talumnos &alumnosT) {
 
         // Verificar que la entrada sea num�rica y tenga exactamente 7 d�gitos
         if (cin.fail() || matricula <= 0 || matricula > 9999999) {
-            cout << "\nLa matricula debe ser un numero de 7 digitos y no puede contener letras." << endl;
+            cout << "\nLa matricula debe ser un numero mayor a 0, que no pase de 7 digitos y no puede contener letras." << endl;
             cin.clear(); // Limpiar el estado de error de cin
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer de entrada
         } else if (busquedaBinaria(alumnosArray, cantidadAlumnos, matricula)!=-1) {
@@ -560,9 +560,9 @@ void modifdatos(Talumnos &p){
             }
         }while(cin.fail()|| matricula <= 0 || matricula > 9999999 ||condic);
         array[ubicacion]->matricula = matricula;
-        quickSort(array, 0, cantidad-1);//volvemos a ordenar a los alumnos por matricula    
+        quickSort(array, 0, cantidad-1);//volvemos a ordenar a los alumnos por matricula
         break;
-    
+
     case 2:
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         do {
@@ -580,7 +580,7 @@ void modifdatos(Talumnos &p){
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');} // Limpiar el buffer de entrada
             cout << "Ingrese el promedio general: ";
             cin >> array[ubicacion]->promedioG;
-    
+
             if (cin.fail() || array[ubicacion]->promedioG < 0 || array[ubicacion]->promedioG > 100) {
                 cout << "\nEl promedio general debe ser un numero entre 0 y 100.\n";
             }
@@ -592,7 +592,7 @@ void modifdatos(Talumnos &p){
         do {
             cout << "Ingrese la direccion: ";
             getline(cin, array[ubicacion]->direccion);
-    
+
             if (array[ubicacion]->direccion.length() == 0) {
                 cout << "\nEl campo no puede estar vacio" << endl;
             }
@@ -603,7 +603,7 @@ void modifdatos(Talumnos &p){
         do {
             cout << "Ingrese el numero de telefono: ";
             getline(cin, array[ubicacion]->telefono);
-    
+
             if (array[ubicacion]->telefono.length() != 10) {
                 cout << "\nEl telefono debe ser de 10 digitos" << endl;
             }
@@ -632,11 +632,11 @@ void creargrupos(Talumnos &alumnos){
         cin>>numgrupos;
         if(cin.fail()||numgrupos<=0||numgrupos>cantalumnos)
             cout<<"\nEl numero de grupos debe ser un numero mayor a cero y menor al total de alumnos.";
-        
+
     }while(cin.fail()||numgrupos<=0||numgrupos>cantalumnos);
     cout<<numgrupos;
 
-    
+
     restantes = cantalumnos;
     alumengrup = cantalumnos/numgrupos;
     for(int i = 0; i<numgrupos; i++){
