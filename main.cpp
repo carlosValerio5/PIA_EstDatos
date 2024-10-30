@@ -194,7 +194,7 @@ void eliminar(Talumnos &alumnosT, Talumnos &Pila){ //Funcion para eliminar alumn
                 cin >> matricula;
                 //Fragmento de codigo sacado de la funcion agregar funcion es para verificar la matricula
                 if (cin.fail() || matricula <= 0 || matricula > 9999999) {
-                    cout << "\nLa matricula debe ser un numero de 7 digitos y no puede contener letras." << endl;
+                    cout << "\nLa matricula debe ser un numero mayor a 0, que no pase de 7 digitos y no puede contener letras." << endl;
                     cin.clear(); // Limpiar el estado de error de cin
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 }
