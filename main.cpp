@@ -250,26 +250,41 @@ void imprimir(Talumnos &alumnosT){
     
     do{
 		op = menuReportes();
-		
+		cout<<endl;
 		switch(op){
 			case 'a':
+				cout<<left<<setw(10)<<"Matricula"<<setw(25)<<"Nombre"<<setw(10)<<"Promedio"<<endl;
 				while(q!=NULL){
 					if(q->promedioG>=70){
-						cout<<setfill('0')<<setw(7)<<q->matricula;
-				        cout<<" "<<q->nombre<<" "<<q->direccion<<" "<<q->telefono<<endl;
-				        q=q->sgtAlumno;
+						cout<<right<<setfill('0')<<setw(7)<<q->matricula<<setfill(' ')<<"   ";
+				        cout<<left<<setw(25)<<q->nombre<<setw(10)<<q->promedioG<<endl;
 					}
+					q=q->sgtAlumno;
 			    }
 				break;
 			case 'b':
+				int cntA,cntR;
+				cntA=0;cntR=0;
+				while (q != NULL) {
+					if(q->promedioG>=70)
+			        	cntA++;
+			        else
+			        	cntR++;
+			        q = q->sgtAlumno;
+			    }
+			    if((cntA+ctnR)!=0)
+			    	cout<< "Aprobados: "<<(cntA/(cntA+cntR))*100<<"%"<<endl<< "Reprobados: "<<(cntR/(cntA+cntR))*100<<"%"<<endl;
+			    else
+			    	cout << "No hay alumnos."<<endl;
+			    
 				break;
 			case 'c':
 				break;
 			case 'd':
-				cout<<left<<setw(10)<<"Matricula"<<setw(15)<<"Nombre"<<setw(15)<<"Direccion"<<setw(10)<<"Telefono"<<endl;
+				cout<<left<<setw(10)<<"Matricula"<<setw(25)<<"Nombre"<<setw(25)<<"Direccion"<<setw(10)<<"Telefono"<<endl;
 				while(q!=NULL){
-			        cout<<setw(3)<<setfill('0')<<setw(7)<<q->matricula;
-			        cout<<" "<<q->nombre<<" "<<q->direccion<<" "<<q->telefono<<endl;
+			        cout<<right<<setfill('0')<<setw(7)<<q->matricula<<setfill(' ')<<"   ";
+			        cout<<left<<setw(25)<<q->nombre<<setw(25)<<q->direccion<<setw(10)<<q->telefono<<endl;
 			        q=q->sgtAlumno;
 			    }
 				break;
@@ -278,6 +293,7 @@ void imprimir(Talumnos &alumnosT){
 			case 'f':
 				break;
 		}
+		q = alumnosT;
 	} while(op!='f');
 	
     
