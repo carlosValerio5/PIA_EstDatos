@@ -44,7 +44,7 @@ int main(){
     Talumnos PilaEliminados=NULL;
     do{
         cout<<"\n\n----------MENU----------"<<endl;
-        cout<<"1.Agregar alumno\n2.Baja de estudiantes\n3.Recuperar alumno\n4.Mostrar(Temporal)\n5.Modificacion de Datos\n6.Creacion de Grupos\n7.Salir\n"<<endl;
+        cout<<"1.Agregar alumno\n2.Baja de estudiantes\n3.Recuperar alumno\n4.Reportes\n5.Modificacion de Datos\n6.Creacion de Grupos\n7.Salir\n"<<endl;
         cout<<"\nIngresa una opcion: ";cin>>op;
         while(op<1 || op >7){
             cout<<"Error. Ingrese un valor entre 1 y 7"<<endl;
