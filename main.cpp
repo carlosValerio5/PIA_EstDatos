@@ -14,7 +14,7 @@ struct datosAlumnos{
 };
 
 typedef struct datosAlumnos *Talumnos;
-void imprimir(Talumnos &);
+void imprimir(Talumnos &,Talumnos &);
 char menuReportes();
 void agregarAlumno(Talumnos &);
 int contarAlumnos(Talumnos );
@@ -72,7 +72,7 @@ int main(){
                     }
                     break;
 
-                case 4:imprimir(alumnos);
+                case 4:imprimir(alumnos, PilaEliminados);
                     break;
 
                 case 5:modifdatos(alumnos);
@@ -243,10 +243,12 @@ void recuperarAlumno(Talumnos &pila, Talumnos &listaAlum)
 
 //------------------------------------------------------------------------
 //Opcion de reportes
-void imprimir(Talumnos &alumnosT){
+void imprimir(Talumnos &alumnosT, Talumnos &Pila){
     char op;
-	Talumnos q;
+    float cntA,cntR,cnt;
+	Talumnos q, p;
     q=alumnosT;
+    p=Pila;
     
     do{
 		op = menuReportes();
@@ -263,22 +265,44 @@ void imprimir(Talumnos &alumnosT){
 			    }
 				break;
 			case 'b':
-				int cntA,cntR;
 				cntA=0;cntR=0;
 				while (q != NULL) {
+					cnt++;
 					if(q->promedioG>=70)
 			        	cntA++;
 			        else
 			        	cntR++;
 			        q = q->sgtAlumno;
 			    }
-			    if((cntA+ctnR)!=0)
-			    	cout<< "Aprobados: "<<(cntA/(cntA+cntR))*100<<"%"<<endl<< "Reprobados: "<<(cntR/(cntA+cntR))*100<<"%"<<endl;
+			    if((cntA+cntR)!=0)
+			    	cout<< "Aprobados: "<<(cntA/(cnt))*100<<"%"<<endl<< "Reprobados: "<<(cntR/(cnt))*100<<"%"<<endl;
 			    else
 			    	cout << "No hay alumnos."<<endl;
 			    
 				break;
 			case 'c':
+				int cal;
+				do {
+			        if(cin.fail()){
+			            cin.clear(); // Limpiar el estado de error de cin
+			            cin.ignore(numeric_limits<streamsize>::max(), '\n');} // Limpiar el buffer de entrada
+			        cout << "Ingrese el promedio general a buscar: ";
+			        cin >> cal;
+			
+			        if (cin.fail() || cal < 0 || cal > 100) {
+			            cout << "\nEl promedio general debe ser un numero entre 0 y 100.\n";
+			        }
+			    } while (cin.fail()|| cal < 0 || cal > 100);
+			    cin.ignore();
+			    
+			    cout<<left<<setw(25)<<"Nombre"<<setw(10)<<"Promedio"<<endl;
+				while(q!=NULL){
+					if(q->promedioG>=cal)
+				        cout<<left<<setw(25)<<q->nombre<<setw(10)<<q->promedioG<<endl;
+					
+					q=q->sgtAlumno;
+			    }
+	
 				break;
 			case 'd':
 				cout<<left<<setw(10)<<"Matricula"<<setw(25)<<"Nombre"<<setw(25)<<"Direccion"<<setw(10)<<"Telefono"<<endl;
@@ -289,6 +313,12 @@ void imprimir(Talumnos &alumnosT){
 			    }
 				break;
 			case 'e':
+				cout<<left<<setw(10)<<"Matricula"<<setw(25)<<"Nombre"<<setw(25)<<"Direccion"<<setw(10)<<"Telefono"<<endl;
+				while(p!=NULL){
+			        cout<<right<<setfill('0')<<setw(7)<<p->matricula<<setfill(' ')<<"   ";
+			        cout<<left<<setw(25)<<p->nombre<<setw(25)<<p->direccion<<setw(10)<<p->telefono<<endl;
+			        p=p->sgtAlumno;
+			    }
 				break;
 			case 'f':
 				break;
