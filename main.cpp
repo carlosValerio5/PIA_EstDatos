@@ -1,3 +1,9 @@
+/* EQUIPO 3
+*  CARLOS HECTOR LEAL DELGADO
+*  CARLOS MANUEL VALERIO RIOS
+*  GUILLERMO BAUTISTA HERNANDEZ
+*  EDER ABISAI ESQUIVEL MALDONADO
+*/
 #include<iostream>
 #include <limits>
 #include<string>
