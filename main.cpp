@@ -671,6 +671,10 @@ void modifdatos(Talumnos &p){
 //Funcion para creargrupos
 void creargrupos(Talumnos &alumnos){
     int cantalumnos = contarAlumnos(alumnos);
+    if (cantalumnos == 0){
+        cout<<"Primero agregue al menos un alumno a la lista.";
+        return;
+    }
     int restantes;
     int numgrupos, alumengrup;//numero de grupos y el numero de alumnos por grupo
     Talumnos *array = new Talumnos[cantalumnos];
