@@ -8,6 +8,8 @@
 #include <limits>
 #include<string>
 #include <iomanip>
+#include <ctype.h>
+
 using namespace std;
 
 struct datosAlumnos{
@@ -484,14 +486,28 @@ void agregarAlumno(Talumnos &alumnosT) {
     } while (aux->direccion.length() == 0);
 
     // Validaci�n para n�mero de tel�fono
+    bool esValido;
+
     do {
+        esValido = true;
         cout << "Ingrese el numero de telefono: ";
         getline(cin, aux->telefono);
 
+        // Verificar que el teléfono tenga 10 dígitos
         if (aux->telefono.length() != 10) {
             cout << "\nEl telefono debe ser de 10 digitos" << endl;
+            esValido = false;
+        } else {
+            // Validar que solo contenga números
+            for (char c :aux->telefono) {
+                if (!isdigit(c)) {
+                    cout << "\nEl telefono solo debe contener numeros" << endl;
+                    esValido = false;
+                    break;
+                }
+            }
         }
-    } while (aux->telefono.length() != 10);
+    } while (!esValido);
 
     // Agregar el nuevo alumno a la lista (como �ltimo elemento)
     aux->sgtAlumno = NULL;
@@ -652,14 +668,28 @@ void modifdatos(Talumnos &p){
         break;
     case 5:
         cin.ignore();
+        bool esValido;
+
         do {
+            esValido = true;
             cout << "Ingrese el numero de telefono: ";
             getline(cin, array[ubicacion]->telefono);
     
+            // Verificar que el teléfono tenga 10 dígitos
             if (array[ubicacion]->telefono.length() != 10) {
                 cout << "\nEl telefono debe ser de 10 digitos" << endl;
+                esValido = false;
+            } else {
+                // Validar que solo contenga números
+                for (char c :array[ubicacion]->telefono) {
+                    if (!isdigit(c)) {
+                        cout << "\nEl telefono solo debe contener numeros" << endl;
+                        esValido = false;
+                        break;
+                    }
+                }
             }
-        } while (array[ubicacion]->telefono.length() != 10);
+        } while (!esValido);
         break;
     default:
         break;
