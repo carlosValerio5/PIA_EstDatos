@@ -499,8 +499,8 @@ void agregarAlumno(Talumnos &alumnosT) {
             esValido = false;
         } else {
             // Validar que solo contenga números
-            for (char c :aux->telefono) {
-                if (!isdigit(c)) {
+            for (int i = 0; i < aux->telefono.length(); i++) {
+                if (!isdigit(aux->telefono[i])) {
                     cout << "\nEl telefono solo debe contener numeros" << endl;
                     esValido = false;
                     break;
@@ -681,8 +681,8 @@ void modifdatos(Talumnos &p){
                 esValido = false;
             } else {
                 // Validar que solo contenga números
-                for (char c :array[ubicacion]->telefono) {
-                    if (!isdigit(c)) {
+                for (int i = 0; i < array[ubicacion]->telefono.length(); i++) {
+                    if (!isdigit(array[ubicacion]->telefono[i])) {
                         cout << "\nEl telefono solo debe contener numeros" << endl;
                         esValido = false;
                         break;
